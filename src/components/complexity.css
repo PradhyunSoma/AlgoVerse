@@ -1,0 +1,7 @@
+.complexity-panel { min-width: 0; }
+.complexity-panel details { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; }
+.complexity-panel summary { cursor: pointer; color: #c8bee9; font-size: 12px; line-height: 1.6; }
+.complexity-panel summary:focus-visible { outline: 2px solid #a78bfa; outline-offset: 4px; border-radius: 3px; }
+.complexity-panel .complexity-measurement { margin-top: 16px; }
+.complexity-panel dd { white-space: normal; text-align: right; flex-shrink: 0; max-width: 55%; overflow-wrap: anywhere; }
+.complexity-panel p { line-height: 1.8; color: var(--muted); margin-top: 10px; }

@@ -1,0 +1,52 @@
+.tree-input { display: grid; gap: 12px; }
+.tree-input label { font-size: 12px; color: #d8cdec; }
+.tree-input textarea { width: 100%; resize: vertical; min-height: 64px; padding: 12px; border: 1px solid #494159; border-radius: 7px; background: #14121d; color: #eee8fa; font: 13px/1.6 ui-monospace, monospace; }
+.tree-input p { color: var(--muted); font-size: 12px; line-height: 1.8; margin: 0; }
+.tree-input .input-error { color: #ffc0b9; }
+.tree-input-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.tree-input-actions span { color: var(--muted); font: 11px ui-monospace, monospace; }
+.tree-visual { margin-top: 24px; }
+.tree-figure { padding: 18px 22px; }
+.tree-legend { display: flex; flex-wrap: wrap; gap: 12px 22px; margin-bottom: 18px; color: #bfc2d6; font-size: 11px; }
+.tree-legend span:first-child { color: #8fc8ef; }
+.tree-legend span:nth-child(2) { color: #c8a6fa; }
+.tree-legend span:last-child { color: #91d2b8; }
+.tree-scroll { overflow: auto; max-height: 580px; scrollbar-color: #756492 #181522; border: 1px solid var(--border); border-radius: 8px; background: #11111b; }
+.tree-scroll svg { display: block; max-width: none; margin-inline: auto; }
+.tree-figure figcaption { margin-top: 12px; color: var(--muted); font-size: 11px; line-height: 1.8; }
+.tree-root, .tree-node text, .tree-edge text { text-anchor: middle; }
+.tree-root { fill: #c6b3ef; font: 600 12px ui-monospace, monospace; }
+.tree-root-pointer path, .tree-edge path { fill: none; stroke: #68637f; stroke-width: 1.5; }
+.tree-edge text { fill: #a69dba; font: 10px ui-monospace, monospace; }
+.tree-edge.is-path path { stroke: #ad95d4; stroke-width: 2.5; }
+.tree-edge.is-transition path { stroke: #f0be82; stroke-width: 3; }
+.tree-edge.is-transition text { fill: #f0be82; font-weight: 700; }
+.tree-node rect { fill: #211f30; stroke: #6e6284; transition: fill 150ms ease, stroke 150ms ease; }
+.tree-node[data-visited="true"] rect { fill: #2b203c; stroke: #c3a0f3; }
+.tree-node[data-completed="true"] rect { fill: #19312e; stroke: #88ccb2; }
+.tree-node[data-path="true"] rect { stroke-width: 2; }
+.tree-node[data-queued="true"] rect { stroke: #e9bc86; stroke-dasharray: 4 3; }
+.tree-node[data-current="true"] rect { stroke: #93ccef; stroke-width: 3; }
+.tree-value { fill: #f2ebff; font: 600 20px ui-monospace, monospace; }
+.tree-id { fill: #b9afca; font: 10px ui-monospace, monospace; }
+.tree-node-state { fill: #c7bfd9; font: 9px ui-monospace, monospace; }
+.tree-console { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); border-top: 1px solid var(--border); padding: 4px 0 18px; gap: 12px; }
+.tree-console .playback-toolbar { align-self: center; }
+.tree-output { padding: 0 22px; }
+.tree-output h3, .tree-memory h3 { font-size: 13px; margin-bottom: 8px; }
+.tree-output p { font: 13px/1.8 ui-monospace, monospace; color: #d1bff4; overflow-wrap: anywhere; }
+.tree-output .tree-output-ids { font-size: 10px; color: var(--muted); }
+.tree-memory { border-top: 1px solid var(--border); padding: 20px 22px; }
+.tree-memory p { color: var(--muted); font-size: 12px; line-height: 1.8; }
+.tree-memory ol { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 10px 0; max-height: 240px; overflow: auto; }
+.tree-memory li { display: flex; flex-direction: column; gap: 6px; border: 1px solid #4b405f; border-radius: 7px; background: #211b2d; padding: 9px 12px; font: 11px ui-monospace, monospace; color: #d6c5ef; overflow-wrap: anywhere; max-width: 100%; }
+.tree-memory li:last-child { border-color: #b59acd; }
+.tree-memory code { color: var(--muted); font-size: 10px; }
+.tree-workspace { margin-top: 24px; }
+.tree-workspace > .tree-info { margin-top: 0; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.tree-traversal-notes { display: grid; gap: 14px; font-size: 12px; line-height: 1.8; margin-top: 18px; }
+.tree-traversal-notes dt { color: #d6c3f6; }
+.tree-traversal-notes dd { color: var(--muted); }
+@media (max-width: 899px) { .tree-console { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 639px) { .tree-figure { padding: 16px; } .tree-scroll { max-height: 460px; } }
+@media (prefers-reduced-motion: reduce) { .tree-node rect { transition: none; } }

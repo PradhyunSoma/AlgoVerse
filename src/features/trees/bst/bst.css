@@ -1,0 +1,13 @@
+.bst-inputs { display: flex; flex-wrap: wrap; gap: 14px; align-items: end; }
+.bst-inputs label { display: flex; flex-direction: column; gap: 8px; }
+.bst-inputs input { width: 110px; background: #14121d; color: #eee8fa; border: 1px solid #494159; padding: 12px; border-radius: 6px; }
+.bst-inputs select { padding: 12px; border-radius: 6px; background: #14121d; color: #eee8fa; border: 1px solid #494159; }
+.bst-snapshot-note { margin: 0 22px 16px; color: #cbb6e9; font-size: 12px; line-height: 1.8; }
+.bst-pointer-update { margin: 0 22px 18px; padding: 10px 14px; background: #2d251c; border: 1px solid #6a5033; border-radius: 6px; color: #edbd7d; font: 12px/1.8 ui-monospace, monospace; }
+.tree-held-title { fill: #edbd7d; text-anchor: middle; font: 10px ui-monospace, monospace; }
+.tree-node[data-detached="true"] rect { stroke-dasharray: 5 3; }
+.tree-node[data-target-node="true"] rect { stroke: #e8a3ac; stroke-width: 3; }
+.tree-node[data-successor="true"] rect { stroke: #edbd7d; stroke-width: 3; }
+.tree-node[data-new="true"] rect { stroke: #c5a0f0; stroke-width: 3; }
+.tree-root-pointer.is-changed path { stroke: #edbd7d; stroke-width: 3; }
+.tree-root-pointer.is-changed text { fill: #edbd7d; }

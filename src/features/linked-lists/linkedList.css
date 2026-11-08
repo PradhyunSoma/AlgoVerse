@@ -1,0 +1,67 @@
+.list-inputs { display: flex; flex-wrap: wrap; align-items: end; gap: 14px; }
+.list-inputs label { display: flex; flex-direction: column; gap: 8px; }
+.list-inputs input { width: 100px; }
+.list-operation-form > p { color: var(--muted); font-size: 11px; line-height: 1.8; margin-top: 10px; }
+.list-operation-form .input-error { color: #ffc0b9; }
+.list-maintenance { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 18px; }
+.list-maintenance p { color: #bcb5d2; font: 11px/1.8 ui-monospace, monospace; overflow-wrap: anywhere; }
+.list-maintenance strong, .list-current-summary strong, .list-traversal strong { display: block; color: #e0d9f1; font: 500 11px/2 sans-serif; }
+.list-figure { padding: 12px 22px 18px; }
+.list-scroll { overflow-x: auto; scrollbar-color: #756492 #181522; }
+.list-scroll svg { display: block; max-width: none; }
+.list-figure figcaption { color: var(--muted); font-size: 11px; line-height: 1.8; }
+.list-node rect { fill: #211e30; stroke: #75678e; transition: fill 160ms ease, stroke 160ms ease; }
+.list-node-divider { stroke: #75678e; }
+.list-node text { text-anchor: middle; }
+.list-node-value { fill: #eee6ff; font: 600 24px ui-monospace, monospace; }
+.list-field-label { fill: #ada4c5; font: 9px ui-monospace, monospace; letter-spacing: 1px; }
+.list-node-reference { fill: #c8b6ec; font: 11px ui-monospace, monospace; }
+.list-node-id { fill: #b5abc9; font: 11px ui-monospace, monospace; }
+.list-node-status { fill: #d5c2ff; font: 10px ui-monospace, monospace; }
+.list-node[data-state*="Current"] rect { stroke: #88c8ef; fill: #192936; stroke-width: 2; }
+.list-node[data-state*="New node"] rect { stroke: #bc9ff3; stroke-width: 2; }
+.list-node[data-state*="Detached"] rect { stroke-dasharray: 5 3; }
+.list-node-removed rect { fill: #302127; stroke: #d9a0a0; stroke-dasharray: 5 3; }
+.list-node-removed .list-node-status { fill: #edb5b5; }
+.list-pointer path { fill: none; stroke: #7c7394; stroke-width: 1.6; }
+.list-pointer.is-changed path { stroke: #edbd7d; stroke-width: 2.5; }
+.list-pointer.is-followed path { stroke: #88c8ef; stroke-width: 2.5; }
+.list-pointer text { fill: #edbd7d; font: 9px ui-monospace, monospace; text-anchor: middle; }
+.list-head, .list-null { fill: #c3b0f5; font: 600 12px ui-monospace, monospace; }
+.list-pointer-update { color: #edbd7d; background: #2d251c; border: 1px solid #6a5033; border-radius: 6px; padding: 10px 14px; font: 12px/1.7 ui-monospace, monospace; margin-top: 16px; }
+.list-pointer-update span { display: block; font: 10px/1.8 sans-serif; }
+.list-current-summary, .list-traversal { padding: 0 22px 20px; color: #c9bdec; font: 12px/1.9 ui-monospace, monospace; overflow-wrap: anywhere; }
+.list-workspace { margin-top: 24px; }
+.list-console { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 12px; padding-bottom: 22px; border-top: 1px solid var(--border); }
+.list-context { padding-top: 16px; }
+.list-console .execution-state { border-top: 0; padding-top: 0; }
+.list-console .step-explanation { min-height: 0; margin-block: 14px; }
+.list-console .list-current-summary { padding-bottom: 12px; }
+.list-console .playback-toolbar { align-self: center; }
+.list-workspace > .bubble-info { margin-top: 0; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+@media (max-width: 899px) { .list-console { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 639px) {
+  .list-inputs { align-items: stretch; }
+  .list-inputs label:first-child { width: 100%; }
+  .list-inputs select { width: 100%; }
+  .list-figure { padding-inline: 16px; }
+  .list-maintenance p { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .list-node rect { transition: none; } }
+
+.doubly-legend { display: flex; flex-wrap: wrap; gap: 14px; margin: 8px 0 16px; font: 11px/1.8 ui-monospace, monospace; }
+.doubly-legend span:first-child { color: #8dc8f2; }
+.doubly-legend span:last-child { color: #85d2ba; }
+.doubly-next-text { fill: #8dc8f2; }
+.doubly-prev-text { fill: #85d2ba; }
+.doubly-next path { stroke: #8dc8f2; }
+.doubly-prev path { stroke: #85d2ba; stroke-dasharray: 5 3; }
+.doubly-pointer.is-changed path { stroke: #edbd7d; stroke-width: 2.5; }
+.doubly-pointer.is-followed path { stroke: #dcc6ff; stroke-width: 3; }
+.doubly-endpoint text { fill: #c3b0f5; font: 600 11px ui-monospace, monospace; text-anchor: middle; }
+.doubly-endpoint path { fill: none; stroke: #b29ae5; stroke-width: 1.5; }
+.doubly-endpoint.is-changed text { fill: #edbd7d; }
+.doubly-endpoint.is-changed path { stroke: #edbd7d; stroke-width: 2.5; }
+.doubly-endpoint.is-followed path { stroke: #dcc6ff; stroke-width: 3; }
+.doubly-endpoint .doubly-change-label { font-size: 9px; }
+.list-node[data-state*="chain only"] rect { stroke-dasharray: 5 3; }

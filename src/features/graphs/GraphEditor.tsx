@@ -1,0 +1,20 @@
+import { DIJKSTRA_EDGES, DIJKSTRA_VERTICES, MAX_EDGE_WEIGHT } from './graphWeights'
+import { useState, type FormEvent } from 'react'
+import { MAX_EDGES, MAX_VERTICES, SAMPLE_EDGES, SAMPLE_VERTICES, type Graph } from './graphModel'
+export interface GraphDraft { vertices: string; edges: string; directed: boolean }
+export default function GraphEditor({ graph, error, onApply, weighted = false }: { graph: Graph; error: string; weighted?: boolean; onApply: (draft: GraphDraft, resetStart?: boolean) => void }) {
+  const [draft, setDraft] = useState<GraphDraft>(() => ({ vertices: graph.vertices.map(v => v.label).join(', '), edges: graph.edges.map(e => `${graph.vertices.find(v => v.id === e.source)!.label}-${graph.vertices.find(v => v.id === e.destination)!.label}: ${e.weight}`).join('\n'), directed: graph.directed }))
+  function submit(event: FormEvent) { event.preventDefault(); onApply(draft) }
+  function replace(next: GraphDraft) { setDraft(next); onApply(next, true) }
+  return <form className="lesson-panel array-input-panel graph-editor" onSubmit={submit} noValidate>
+    <h2>Build your graph</h2><p id="graph-editor-help">Up to {MAX_VERTICES} vertices and {MAX_EDGES} edges. Labels use 1–4 letters/digits, beginning with a letter; lowercase becomes uppercase. Labels must be unique. No self-loops or parallel/duplicate edges, even with different weights.</p>
+    <div className="graph-editor-fields"><div><label htmlFor="graph-vertices">Vertices · comma separated</label><input id="graph-vertices" value={draft.vertices} onChange={e => setDraft({ ...draft, vertices: e.target.value })} aria-invalid={!!error} aria-describedby={`graph-editor-help graph-weight-help graph-edit-policy${error ? ' graph-input-error' : ''}`} spellCheck={false} />
+      <label htmlFor="graph-mode">Edge direction</label><select id="graph-mode" value={draft.directed ? 'directed' : 'undirected'} onChange={e => setDraft({ ...draft, directed: e.target.value === 'directed' })}><option value="undirected">Undirected · both ways</option><option value="directed">Directed · source to destination</option></select>
+      <p><code>A-B</code> means A → B in directed mode. A-B and B-A are separate directed edges, but duplicates in undirected mode.</p></div>
+      <div><label htmlFor="graph-edges">Edges · one source-destination pair per line</label><textarea id="graph-edges" rows={5} value={draft.edges} onChange={e => setDraft({ ...draft, edges: e.target.value })} aria-invalid={!!error} aria-describedby={`graph-editor-help graph-weight-help graph-edit-policy${error ? ' graph-input-error' : ''}`} spellCheck={false} /></div></div>
+    <p id="graph-weight-help">Use <code>A-B: 4</code> for a weighted edge. Omit <code>: weight</code> to use 1. Weights must be integers from 0 to {MAX_EDGE_WEIGHT}, including zero; negative weights are rejected. BFS and DFS preserve weights but ignore them when traversing. Dijkstra’s Restore Sample Graph loads its weighted example.</p>
+    <p id="graph-edit-policy">Edit these lists to add or remove vertices and edges, then Apply Graph. Remove a vertex’s incident edges too. Retained labels and connections keep their IDs. Direction changes apply only on submission. If the start is removed, the first alphabetical vertex becomes the new start.</p>
+    {error && <p id="graph-input-error" role="alert" className="input-error">{error} The last valid graph and step are preserved; playback is paused.</p>}
+    <div className="graph-editor-actions"><button className="step-button step-button-primary" type="submit">Apply Graph</button><button className="step-button" type="button" onClick={() => replace({ vertices: weighted ? DIJKSTRA_VERTICES : SAMPLE_VERTICES, edges: weighted ? DIJKSTRA_EDGES : SAMPLE_EDGES, directed: false })}>{weighted ? 'Restore Sample Graph' : 'Restore Sample'}</button><button className="step-button" type="button" onClick={() => replace({ vertices: '', edges: '', directed: draft.directed })}>Clear Graph</button><span>{graph.vertices.length} vertices · {graph.edges.length} edges · {graph.directed ? 'Directed' : 'Undirected'}</span></div>
+  </form>
+}

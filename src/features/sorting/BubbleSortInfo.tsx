@@ -1,0 +1,23 @@
+export default function BubbleSortInfo() {
+  return (
+    <section className="bubble-info lesson-panel" aria-labelledby="bubble-info-title">
+      <div>
+        <p className="eyebrow">UNDERSTAND THE ALGORITHM</p>
+        <h2 id="bubble-info-title">Why does it work?</h2>
+        <p>Bubble Sort orders an array from smallest to largest by comparing neighbors. If the left value is larger, the pair swaps places. Equal values stay in place.</p>
+        <p>Each comparison carries the larger value to the right. By the end of a pass, the largest remaining value has reached its final position. The next pass scans a shorter range.</p>
+        <p>We use <strong>early exit</strong>. If a complete pass makes no swaps, every neighboring pair is already in order and the algorithm stops.</p>
+      </div>
+      <div className="complexity-notes">
+        <h3>Complexity</h3>
+        <dl>
+          <div><dt>Best time · already sorted</dt><dd>O(n)</dd></div>
+          <div><dt>Average time</dt><dd>O(n²)</dd></div>
+          <div><dt>Worst time · reverse sorted</dt><dd>O(n²)</dd></div>
+          <div><dt>In-place working space</dt><dd>O(1)</dd></div>
+        </dl>
+        <p>n is the number of values. The core sort needs O(1) working space. AlgoVerse copies your input and saves snapshots for Previous Step, using extra memory.</p>
+      </div>
+    </section>
+  )
+}

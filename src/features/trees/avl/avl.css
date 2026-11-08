@@ -1,0 +1,12 @@
+.avl-presets { border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin: 8px 0; }
+.avl-presets legend { color: #d6c3f6; padding: 0 6px; font-size: 13px; }
+.avl-presets .tree-input-actions { margin-top: 12px; }
+.avl-page .avl-example { color: #d6c3f6; }
+.avl-rotation-panel { padding: 0 22px 20px; }
+.avl-rotation-panel h3 { color: #d6c3f6; font-size: 14px; margin-bottom: 10px; }
+.avl-rotation-panel p { color: #bfc2d6; font-size: 12px; line-height: 1.8; margin: 8px 0; }
+.avl-rotation-panel .execution-state { padding-inline: 0; }
+.avl-rotation-panel .bst-pointer-update { color: #edbd7d; padding: 10px 14px; }
+.tree-node-metrics { fill: #d6c3f6; font: 10px ui-monospace, monospace; }
+.avl-page .tree-node[data-emphasized="true"] rect { stroke: #edbd7d; stroke-width: 3; }
+.avl-page .tree-node[data-height-pending="true"] .tree-node-metrics { fill: #edbd7d; }

@@ -1,0 +1,33 @@
+.bar-pivot { --bar-color: #c4a0fa; }
+.bar-pivot-placed { --bar-color: #81cfb5; }
+.bar-boundary { --bar-color: #f3d58d; }
+.bar-less-equal { --bar-color: #8ab9db; }
+.bar-greater { --bar-color: #d6a1c3; }
+.bar-unseen { --bar-color: #68618e; }
+.bar-pivot .array-bar { outline: 1px solid #d3b8fa; outline-offset: 2px; }
+.bar-boundary .array-bar { outline: 1px dashed #f3d58d; outline-offset: 2px; }
+.bar-markers { display: block; min-height: 26px; color: #ded0fc; font: 9px/1.4 ui-monospace, monospace; overflow-wrap: anywhere; }
+.quick-partition { margin: 20px 22px 0; padding: 14px 16px; border: 1px solid #49415f; border-radius: 8px; background: #1d1a2a; }
+.quick-pivot-summary { display: flex; gap: 18px; align-items: center; }
+.quick-pivot-summary > div { min-width: 42px; text-align: center; }
+.quick-pivot-summary strong { display: block; margin-top: 6px; color: #d6baff; font: 600 22px ui-monospace, monospace; }
+.quick-partition p, .quick-recursion-content p { color: var(--muted); font-size: 11px; line-height: 1.8; }
+.quick-partition > p { margin-top: 10px; }
+.quick-partition p strong { color: #d7caed; }
+.quick-partition .quick-boundary-pending { color: #f3d58d; }
+.quick-recursion { margin-bottom: 24px; }
+.quick-recursion-content { padding: 18px 22px; }
+.quick-recursion-content > p + p { margin-top: 8px; }
+.quick-recursion-content code { color: #d1c2f4; overflow-wrap: anywhere; }
+.quick-stack-scroll { max-height: 250px; overflow: auto; margin: 12px 0; scrollbar-color: #756492 #181522; }
+.quick-stack { display: grid; gap: 8px; }
+.quick-stack li { display: grid; grid-template-columns: 72px 1fr 1.4fr 1.4fr; align-items: center; gap: 10px; padding: 12px; border: 1px solid #393345; border-radius: 7px; background: #15151f; color: #bfc2d3; font-size: 11px; }
+.quick-stack strong { font: 500 12px ui-monospace, monospace; color: #d9c9fa; }
+.quick-stack li[data-active="true"] { border-color: #b29aeb; background: #272137; }
+.quick-depth { color: #a8a0bf; }
+.quick-returned { overflow-wrap: anywhere; }
+@media (max-width: 639px) {
+  .quick-recursion-content { padding: 16px; }
+  .quick-stack li { grid-template-columns: 1fr 1fr; }
+  .quick-partition { margin-inline: 16px; padding: 12px; }
+}
