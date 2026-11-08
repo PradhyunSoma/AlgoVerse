@@ -22,7 +22,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
   const menuButton = useRef<HTMLButtonElement>(null)
   const mainContent = useRef<HTMLElement>(null)
   const category = categories.find((item) => matchPath(item.path, location.pathname))
-  const pageTitle = category?.title ?? (location.pathname === '/' ? 'Dashboard' : 'Page not found')
+  const pageTitle = category?.title ?? (matchPath('/code-visualizer', location.pathname) ? 'Code Visualizer' : location.pathname === '/' ? 'Dashboard' : 'Page not found')
 
   // Clear the previous entry so returning with Back/Forward keeps the menu closed.
   if (openLocationKey !== null && openLocationKey !== location.key) {
@@ -103,6 +103,11 @@ export default function AppShell({ children }: { children: ReactNode }) {
               {category.status === 'coming-soon' && <span className="nav-soon">Soon</span>}
             </NavLink>
           ))}
+          <NavLink className={navigationClass} to="/code-visualizer" end onClick={handleNavigation} aria-label="Code Visualizer" aria-describedby="code-nav-soon">
+            <Icon name="code" />
+            <span>Code Visualizer</span>
+            <span id="code-nav-soon" className="nav-soon">Coming Soon</span>
+          </NavLink>
         </nav>
         <div className="sidebar-note">
           <span className="note-icon"><Icon name="code" /></span>

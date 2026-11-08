@@ -1,6 +1,6 @@
 # AlgoVerse
 
-An educational algorithm visualization project built with React, TypeScript, Vite, and Tailwind CSS. The current implementation includes the Phase 1 homepage and routes, all five planned sorting visualizers, singly/doubly/circular singly linked list operations, general binary tree traversals, BST/AVL operations, and graph BFS/DFS/Dijkstra through Phase 5, Task 3.
+An educational algorithm visualization project built with React, TypeScript, Vite, and Tailwind CSS. The current implementation includes the Phase 1 homepage and routes, all five planned sorting visualizers, singly/doubly/circular singly linked list operations, general binary tree traversals, BST/AVL operations, graph BFS/DFS/Dijkstra, sorting comparisons, and learning-experience polish through Phase 6, Task 3.
 
 ## Run locally on macOS
 
@@ -136,7 +136,7 @@ Best and average time are O(n log n); worst time is O(n²). The recursive stack 
 
 Tests verify partition invariants, pending boundaries, pivot positions, no self-swaps, recursive call order, input preservation, instability examples, every forward/backward snapshot, autoplay, all speeds, replay/reset, input changes, and switching among all five algorithms. The other four algorithms' regression tests remain intact.
 
-Phase 2 implementation is complete through Task 6. Comprehensive phase-by-phase audits, including the final Phase 2 review, are deferred until all development phases are complete. Regular task-level checks and immediate fixes continue. Comparison features have not started.
+Phase 2 implementation is complete through Task 6. Comprehensive phase-by-phase audits, including the final Phase 2 review, are deferred until all development phases are complete. Regular task-level checks and immediate fixes continue. Sorting comparisons are documented under Phase 6 below.
 
 ## Singly linked list
 
@@ -353,4 +353,55 @@ Important modules in `src/features/graphs/`:
 
 The simple-graph adjacency-list algorithm with a binary heap and lazy duplicates uses the usual **O((V + E) log V)** time bound. There are O(E + 1) heap entries in the worst case and O(V) distance/predecessor/finalized state, for O(V + E) working memory. Heap operations are O(log(E + 1)); without parallel edges E ≤ V². Alphabetical adjacency preprocessing is O(E log V). Input copies, rendering, path inspection, and full recorded snapshots add overhead beyond core Dijkstra; no observer means no snapshot construction.
 
-Phase 5 implementation is complete through Task 3. Phase 6 comparison features have not begun. Comprehensive phase audits remain deferred until all development phases are implemented; regular checks and immediate fixes continue.
+Phase 5 implementation is complete through Task 3. Phase 6 development is documented below. Comprehensive phase audits remain deferred until all development phases are implemented; regular checks and immediate fixes continue.
+
+
+## Complexity explanations · Phase 6, Task 1
+
+Every completed sorting, list, tree, and graph lesson now has a consistent **Time and space complexity** panel. Summaries and “Why?” explanations remain visible. Open **Implementation assumptions and storage** (mouse, touch, or keyboard) for implementation-specific details.
+
+- Sorting covers best, average, worst, and auxiliary bounds, including Bubble Sort’s actual early exit, Selection Sort’s fixed comparison scan, Insertion Sort’s shifts/inversions, Merge Sort’s reusable buffer and unconditional merging, and last-pivot Lomuto Quick Sort’s skewed and all-equal cases. Average sorting bounds explicitly assume random permutations of distinct keys.
+- Lists distinguish HEAD-only singly lists from maintained HEAD/TAIL in doubly and circular lists. Each insertion/deletion position is listed separately. Searching is clearly conceptual, not a newly implemented control. Core endpoint pointer work is separated from linear validation/copying/layout work in the real wrapper.
+- Trees define n, h, and w; compare unbalanced BST O(h) with AVL O(log n); explain actual successor transplantation, cached-height rotations, iterative search, explicit update paths, traversal stacks, live queues, and stored output. Path bookkeeping and whole-tree validation are not hidden inside a claimed logarithmic total runtime.
+- Graphs define V and E, separate adjacency preprocessing from BFS/DFS traversal, and retain the actual lazy-duplicate binary-heap bound for Dijkstra. Path reconstruction’s defensive array scans are documented separately from the algorithm.
+- Theoretical growth rates are not exact measured counts. Playback steps include teaching events; no comparisons dashboard, runtime benchmark, or operation counter is introduced.
+
+`src/components/complexity.ts` defines the typed metadata contract. `ComplexityPanel.tsx` and `complexity.css` supply the shared presentation. Each feature owns a `complexity.ts` catalog; existing Info components retain their explanatory content and embed the shared panel. Algorithm modules do not import educational metadata.
+
+Tests cover all 14 views through their actual routes/selectors, expanded details, preservation of playback state, expected bounds, and executable guards for early exit, scans, shifts, merging, pivots, endpoint walks, and stale heap candidates. Phase 6 Task 2 is implemented below. Comprehensive phase audits remain deferred.
+
+
+## Sorting comparisons · Phase 6, Task 2
+
+Open `/sorting` and choose **Compare**. The default is Bubble Sort and Quick Sort. Select two or three different algorithms, enter a shared array, or use a preset. Inputs keep the existing limits: 1–12 integers from −99 to 99. Each trace receives an independent copy of the same original. Invalid input keeps the current comparison and pauses playback. Switching views preserves valid values and cancels the old timer, but restarts the lesson with that view’s default algorithm selections.
+
+**Counting convention:** count actual value/key/pivot comparisons, excluding loop/index checks. A real swap between distinct positions is one swap and two main-array writes; equal-valued swaps still count, skipped self-swaps do not. Insertion Sort shifts each count as one write, and each key placement counts as one write even if it writes the same value back. Merge Sort writes of numeric values to its buffer are separate from copy-back main-array writes. Initial input/result copies, buffer allocation/null clearing, local assignments, identity tracking, and snapshot creation are excluded. These are data-operation counts, not all JavaScript assignments or timings.
+
+**Playback policy:** one timer drives a separate bounded cursor per trace. Each Next/tick advances unfinished traces once and holds completed traces. Previous moves each cursor back once where possible, including a completed trace; it is not global history undo of ticks where that trace stayed still. Reset rewinds all. Replay starts all from zero. Every panel reads array, explanation, progress, and cumulative metrics from its own snapshot; autoplay stops when all traces finish. Trace lengths differ because teaching events differ, not because a step is a unit of equal computational work.
+
+The final comparison table shows input size, comparisons, swaps, main-array and buffer writes, separate trace lengths, and theoretical case/space bounds. Input-specific insights explain the actual totals without claiming a universal winner. Insertion’s held key, Merge’s sources/buffer/division tree, and Quick’s partition/call stack remain real algorithm states. Two-column desktop panels and wider three-column layouts stack on smaller screens; diagrams and summary tables have keyboard-scrollable overflow. Existing reduced-motion styles apply to the reused bars.
+
+Important modules:
+- `sortingCatalog.ts`: existing algorithm/trace/code/lesson registry shared by both views.
+- `operationMetrics.ts`: typed cumulative event instrumentation; each existing trace records immutable metric snapshots.
+- `comparison.ts`: isolated run construction, input presets, and metric-based insights.
+- `SortingPage.tsx`: accessible tabs and shared valid input. `SortingVisualizer.tsx` retains the original single lesson.
+- `SortingComparison.tsx`, `ComparisonPanel.tsx`, `ComparisonMetrics.tsx`, `ComparisonSummary.tsx`, `comparison.css`: comparison orchestration, renderers, counters, summary, and responsive styling.
+- `useStepPlayback.ts`: shared one/multi-trace timer engine with the existing single-trace wrapper.
+- `comparison.test.ts`, `SortingComparison.test.tsx`, `useTracePlayback.test.tsx`: hand-computed counts, snapshot/state restoration, independent completion, timers, edits, tab switching, and keyboard tests.
+
+Phase 6 Task 2 ends here. Task 3 polish is documented below. Comprehensive final phase audits remain deferred.
+
+
+## Learning experience polish · Phase 6, Task 3
+
+Open **Code Visualizer** in the desktop sidebar or mobile menu, or visit `/code-visualizer`. The Coming Soon page and dashboard card describe future capabilities. The preview is static, uses plain-language instructions, and runs no code. Phase 7's programming language is undecided.
+
+Shared playback now communicates Ready/Paused/Playing/Complete and accessible step progress. Reset pauses and rewinds the current trace; Replay restarts a completed trace. Automatic explanation updates are not live-announced on every tick; pause or step manually to inspect the current explanation. Validation alerts remain active. Algorithm and mutation-commit semantics are unchanged.
+
+Mobile controls have comfortable minimum heights; wide diagrams and comparison tables remain locally scrollable. The operating-system reduced-motion preference disables nonessential animations/transitions while preserving step updates. Completed comparison panels avoid repeated renders while other traces progress; tree position lookups reuse an unchanged layout. No dependencies were added.
+
+Before Phase 7, agree on the language and execution/tracing scope. Comprehensive phase-by-phase audits remain deferred until Phase 7 is implemented.
+
+
+Task 3 verification: type-check and lint passed; all 609 tests across 39 files passed; production build passed with the existing >500 kB chunk advisory. Browser checks covered the new route, reload, Back/Forward, mobile keyboard navigation, 404 recovery, stacked comparisons, locally scrolling tree/list/graph diagrams, and invalid graph feedback at 320/390px; the new page was also inspected at desktop width. No browser errors were logged. Reduced-motion CSS rules were inspected, but an OS-enabled reduced-motion session and dedicated screen-reader session were not exercised. Comprehensive audits remain deferred.

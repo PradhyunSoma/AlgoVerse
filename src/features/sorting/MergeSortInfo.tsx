@@ -1,3 +1,6 @@
+import ComplexityPanel from '../../components/ComplexityPanel'
+import { sortingComplexity } from './complexity'
+
 export default function MergeSortInfo() {
   return (
     <section className="bubble-info lesson-panel" aria-labelledby="merge-info-title">
@@ -9,16 +12,7 @@ export default function MergeSortInfo() {
         <p>Compare the first remaining value in each sorted half and copy the smaller one into a temporary buffer. Once a half is exhausted, copy the rest of the other half. Then copy the complete buffer back into the working array, one position at a time.</p>
         <p>On equal values, take the <strong>left value first</strong>. The halves preserve their internal order and the left half came first originally, so equal elements keep their relative order. This makes Merge Sort stable.</p>
       </div>
-      <div className="complexity-notes">
-        <h3>Complexity</h3>
-        <dl>
-          <div><dt>Best time</dt><dd>O(n log n)</dd></div>
-          <div><dt>Average time</dt><dd>O(n log n)</dd></div>
-          <div><dt>Worst time</dt><dd>O(n log n)</dd></div>
-          <div><dt>Auxiliary space</dt><dd>O(n)</dd></div>
-        </dl>
-        <p>Halving gives O(log n) levels, and merging across each level processes O(n) values. This implementation always merges, even for sorted input. It reuses one O(n) buffer plus an O(log n) call stack. AlgoVerse also copies input and stores trace snapshots, which need extra memory.</p>
-      </div>
+      <ComplexityPanel profile={sortingComplexity.merge} />
     </section>
   )
 }

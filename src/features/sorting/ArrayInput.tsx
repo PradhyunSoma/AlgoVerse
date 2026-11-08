@@ -7,10 +7,11 @@ import {
 interface ArrayInputProps {
   initialValues: readonly number[]
   onApply: (values: readonly number[]) => void
+  presets?: readonly { readonly label: string; readonly values: readonly number[] }[]
   onPause: () => void
 }
 
-export default function ArrayInput({ initialValues, onApply, onPause }: ArrayInputProps) {
+export default function ArrayInput({ initialValues, onApply, onPause, presets }: ArrayInputProps) {
   const [draft, setDraft] = useState(initialValues.join(', '))
   const [randomLength, setRandomLength] = useState(DEFAULT_RANDOM_LENGTH)
   const [error, setError] = useState('')
@@ -48,6 +49,12 @@ export default function ArrayInput({ initialValues, onApply, onPause }: ArrayInp
         <p id="array-input-help">Use 1–{MAX_ARRAY_LENGTH} integers from {MIN_ARRAY_VALUE} to {MAX_ARRAY_VALUE}. Duplicates and zero are welcome.</p>
         {error && <p id="array-input-error" className="input-error" role="alert">{error} The current array is preserved and playback is paused.</p>}
       </form>
+      {presets && <div className="comparison-presets" role="group" aria-label="Comparison input presets">{presets.map(preset => <button key={preset.label} className="step-button" type="button" onClick={() => {
+        onPause()
+        const result = parseArrayInput(preset.values.join(', '))
+        if (!result.ok) { setError(result.error); return }
+        setDraft(result.values.join(', ')); setError(''); onApply(result.values)
+      }}>{preset.label}</button>)}</div>}
       <div className="random-array-controls">
         <label htmlFor="random-length">Random array length</label>
         <select id="random-length" value={randomLength} onChange={(event) => setRandomLength(Number(event.target.value))}>

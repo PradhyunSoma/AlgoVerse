@@ -1,4 +1,5 @@
 import AlgorithmIllustration from '../components/AlgorithmIllustration'
+import { Link } from 'react-router'
 import CategoryCard from '../components/CategoryCard'
 import Icon, { type IconName } from '../components/Icon'
 import { categories } from './categories'
@@ -117,6 +118,11 @@ export default function Dashboard() {
           </p>
         </div>
         <span className="next-status"><span className="status-dot" /> Bubble Sort is ready</span>
+      </section>
+      <section className="code-coming-card" aria-labelledby="code-coming-title">
+        <Icon name="code" />
+        <div><h2 id="code-coming-title"><Link to="/code-visualizer">Code Visualizer</Link></h2><p>A future space to explore your own code, one step at a time.</p></div>
+        <span className="code-coming-badge">Coming Soon</span>
       </section>
     </>
   )

@@ -1,9 +1,11 @@
+import { recordOperation, zeroMetrics, type OperationMetrics } from './operationMetrics'
 import { selectionSort, type SelectionSortEvent, type SelectionSortEventKind } from './selectionSort'
 
 export interface SelectionSortStep extends SelectionSortEvent {
   readonly values: readonly number[]
   readonly lineId: SelectionSortEventKind
   readonly explanation: string
+  readonly metrics: OperationMetrics
   readonly comparisons: number
   readonly swaps: number
 }
@@ -35,13 +37,11 @@ export function createSelectionSortTrace(input: readonly number[]): readonly Sel
     throw new RangeError('Selection Sort requires finite numbers.')
   }
   const steps: SelectionSortStep[] = []
-  let comparisons = 0
-  let swaps = 0
+  let metrics = zeroMetrics
   selectionSort(input, (event, values) => {
-    if (event.kind === 'compare') comparisons += 1
-    if (event.kind === 'swap') swaps += 1
+    metrics = recordOperation(metrics, 'selection', event.kind)
     steps.push({ ...event, values: [...values], lineId: event.kind,
-      explanation: explain(event, values), comparisons, swaps })
+      explanation: explain(event, values), metrics, comparisons: metrics.comparisons, swaps: metrics.swaps })
   })
   return steps
 }

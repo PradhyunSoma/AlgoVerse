@@ -17,7 +17,7 @@ export default function TreeDiagram({ step, breadthFirst, bst, nodeAnnotations, 
   const description = useId()
   const marker = useId().replace(/:/g, '')
   const layout = useMemo(() => bst?.layout ?? layoutTree(step.tree), [step.tree, bst?.layout])
-  const positions = new Map(layout.positions.map((position) => [position.id, position]))
+  const positions = useMemo(() => new Map(layout.positions.map((position) => [position.id, position])), [layout])
   const scrollArea = useRef<HTMLDivElement>(null)
   const rootId = step.tree.root
   const rootX = rootId === null ? layout.width / 2 : positions.get(rootId)!.x

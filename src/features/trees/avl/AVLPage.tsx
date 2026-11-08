@@ -84,7 +84,7 @@ export default function AVLPage({ initialTree, onSave, typeSelector }: { initial
     <section className="lesson-panel tree-visual" aria-labelledby="avl-visual-title"><div className="lesson-panel-heading"><h2 id="avl-visual-title">Inside the AVL tree</h2><span className="lesson-tag">{operations[kind]}</span></div>
       <AVLDiagram step={step} breadthFirst={kind === 'level-order'} />
       {operationStep && <AVLRotationPanel step={operationStep} />}
-      <div className="tree-console"><div><div className="step-explanation" role="status" aria-live="polite" aria-atomic="true"><span className="eyebrow">{step.kind.toUpperCase()}</span><p>{step.explanation}</p></div>
+      <div className="tree-console"><div><div className="step-explanation" role="status" aria-live={playback.isPlaying ? 'off' : 'polite'} aria-atomic="true"><span className="eyebrow">{step.kind.toUpperCase()}</span><p>{step.explanation}</p></div>
         <div className="tree-output"><h3>{operationStep ? 'Operation result' : 'Traversal output'}</h3><p aria-label={operationStep ? 'Operation result' : 'Traversal output'}>
           {operationStep ? step.kind !== 'complete' ? 'Follow the steps; the saved AVL changes only at completion.' : `${operationStep.outcome}${operationStep.result === null ? '' : ` · ${step.tree.nodes[operationStep.result]!.value} (${operationStep.result})`}`
             : (step as AVLTraversalStep).output.map((id) => step.tree.nodes[id]!.value).join(' → ') || 'No values visited yet'}</p></div>

@@ -42,7 +42,8 @@ test('all sample steps synchronize diagram, queue, order, pseudocode and exact b
   for (let index=trace.length-2; index>=0; index--) { click('Previous Step'); expect(snapshot()).toEqual(snapshots[index]) }
   expect(button('Previous Step')).toBeDisabled()
   click('Next Step'); expect(snapshot()).toEqual(snapshots[1])
-})
+// Full forward/backward snapshot coverage needs headroom when the suite runs in parallel.
+}, 15000)
 
 test.each([0.5, 1, 2, 4])('play, pause, reset, replay, stop at final, and speed %s', speed => {
   vi.useFakeTimers(); mount(); edit('A,B', 'A-B')

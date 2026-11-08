@@ -1,3 +1,6 @@
+import ComplexityPanel from '../../../components/ComplexityPanel'
+import { treeComplexity } from '../complexity'
+
 export default function AVLInfo() {
   return <section className="lesson-panel algorithm-info tree-info" aria-labelledby="avl-info-title">
     <div><p className="eyebrow">ORDERED · BALANCED · LOGARITHMIC</p><h2 id="avl-info-title">Small rotations. Lasting balance.</h2>
@@ -11,11 +14,6 @@ export default function AVLInfo() {
       <p>Insertion follows BST comparisons, connects a leaf, and updates heights on the return path. The first unbalanced ancestor selects a rotation using its child’s balance factor. This implementation continues checking the remaining ancestors.</p>
       <p>Deletion uses the BST lesson’s strategy: disconnect a leaf, promote a sole child, or transplant the actual inorder successor for two children. Its right subtree is preserved. Repair the successor’s former ancestors, the successor at its new position, and then higher ancestors. Deletion can need rotations at multiple levels; a heavy child with BF 0 uses a single rotation.</p>
       <p>Rotations reconnect existing nodes, preserving IDs and the order of values. The middle subtree stays between the two rotated nodes, so inorder traversal remains ascending. Detached components stay visibly held by local references until reconnected.</p>
-    </div><div><h3>Balance guarantees the bounds</h3><dl className="complexity-grid">
-      <div><dt>Search / insert / delete</dt><dd>O(log n)</dd></div><div><dt>Minimum / maximum</dt><dd>O(log n)</dd></div>
-      <div><dt>All traversals</dt><dd>O(n)</dd></div><div><dt>One left/right rotation</dt><dd>O(1)</dd></div>
-      <div><dt>Update / recursive search path</dt><dd>O(log n) space</dd></div></dl>
-      <p>AVL balance keeps height O(log n). Search here is iterative; the update path is stored explicitly. Recursive search would use O(log n) stack space. Traversals reuse the existing stack/queue lessons; output needs O(n) space. Validation, immutable snapshots, layout, and actual-height annotations add educational overhead beyond these core bounds.</p>
-    </div>
-  </section>
+    </div><ComplexityPanel profile={treeComplexity.avl} />
+    </section>
 }

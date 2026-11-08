@@ -1,3 +1,4 @@
+import { recordOperation, zeroMetrics, type OperationMetrics } from './operationMetrics'
 import { insertionSort, type InsertionSortEvent, type InsertionSortEventKind } from './insertionSort'
 
 export interface InsertionSortStep extends InsertionSortEvent {
@@ -7,6 +8,7 @@ export interface InsertionSortStep extends InsertionSortEvent {
   readonly keyOriginalIndex: number | null
   readonly lineId: InsertionSortEventKind
   readonly explanation: string
+  readonly metrics: OperationMetrics
   readonly comparisons: number
   readonly shifts: number
 }
@@ -41,16 +43,14 @@ export function createInsertionSortTrace(input: readonly number[]): readonly Ins
   // Identity tracking belongs to the trace, not the O(1)-space sorting core.
   const identities: (number | null)[] = input.map((_, index) => index)
   let keyOriginalIndex: number | null = null
-  let comparisons = 0
-  let shifts = 0
+  let metrics = zeroMetrics
   insertionSort(input, (event, values) => {
+    metrics = recordOperation(metrics, 'insertion', event.kind)
     if (event.kind === 'key') {
       keyOriginalIndex = identities[event.outerIndex]
       identities[event.outerIndex] = null
     }
-    if (event.kind === 'compare') comparisons += 1
     if (event.kind === 'shift') {
-      shifts += 1
       identities[event.shiftedTo!] = identities[event.shiftedFrom!]
       identities[event.shiftedFrom!] = null
     }
@@ -61,7 +61,7 @@ export function createInsertionSortTrace(input: readonly number[]): readonly Ins
     steps.push({ ...event,
       values: values.map((value, index) => index === event.vacantIndex ? null : value),
       originalIndices: [...identities], keyOriginalIndex,
-      lineId: event.kind, explanation: explain(event, values), comparisons, shifts })
+      lineId: event.kind, explanation: explain(event, values), metrics, comparisons: metrics.comparisons, shifts: metrics.shifts })
   })
   return steps
 }

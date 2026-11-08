@@ -847,6 +847,7 @@ h2 {
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     transition: none !important;
+    animation: none !important;
     scroll-behavior: auto !important;
   }
   .category-card:hover {
@@ -931,4 +932,17 @@ h2 {
     max-width: 240px;
     margin: auto;
   }
+}
+
+/* Keep content and focusable controls usable without clipping wide diagrams. */
+.nav-soon { flex-shrink: 0; white-space: nowrap; }
+.nav-item { column-gap: 9px; }
+.workspace-header strong { overflow-wrap: anywhere; }
+@media (max-width: 639px) {
+  .dashboard button, .dashboard input, .dashboard select, .dashboard summary { min-height: 44px; }
+  .dashboard input, .dashboard select, .dashboard textarea { max-width: 100%; min-width: 0; }
+  .dashboard summary { align-content: center; }
+  .dashboard .step-button { font-size: 12px; }
+  .workspace-header { height: auto; min-height: 54px; padding-block: 10px; }
+  .workspace-header > span { min-width: 0; }
 }

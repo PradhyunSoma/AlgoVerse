@@ -21,6 +21,7 @@ interface StepControlsProps {
 export default function StepControls(props: StepControlsProps) {
   const { index, total, isPlaying, isComplete, isIdle = false } = props
   const progress = isIdle ? 0 : total > 1 ? index / (total - 1) * 100 : 100
+  const status = isIdle ? 'Ready for an operation' : isComplete ? 'Complete' : isPlaying ? 'Playing' : 'Paused'
 
   return (
     <div className="playback-toolbar" role="group" aria-label="Playback controls">
@@ -29,7 +30,7 @@ export default function StepControls(props: StepControlsProps) {
           onClick={isPlaying ? props.onPause : props.onPlay} type="button">
           {isPlaying ? 'Pause' : isComplete && !isIdle ? 'Replay' : 'Play'}
         </button>
-        <button className="step-button" onClick={props.onReset} type="button">Reset</button>
+        <button className="step-button" onClick={props.onReset} title="Pause and return to the first step" type="button">Reset</button>
         <label className="speed-control">
           Speed
           <select value={props.speed} onChange={(event) => props.onSpeedChange(Number(event.target.value) as PlaybackSpeed)}>
@@ -46,8 +47,9 @@ export default function StepControls(props: StepControlsProps) {
           Next Step <span aria-hidden="true">→</span>
         </button>
       </div>
-      <progress className="playback-progress" aria-label="Execution progress" max={100} value={progress} />
-      <p className="playback-hint">{isIdle ? 'Apply an operation to enable playback.' : isComplete ? 'Complete. Replay starts from the beginning.' : 'Next and Previous pause autoplay.'}</p>
+      <progress className="playback-progress" aria-label="Execution progress" aria-valuetext={`${status}. Step ${index + 1} of ${total}.`} max={100} value={progress} />
+      <p className="playback-hint" aria-live="polite">{isIdle ? 'Ready. Apply an operation to enable playback.' : isComplete ? 'Complete. Replay starts from the beginning.' : isPlaying ? 'Playing. Pause to inspect the current step.' : 'Paused. Next and Previous move one step at a time.'}</p>
+      <p className="playback-hint">Reset pauses and returns to the first step. Next and Previous pause autoplay.</p>
     </div>
   )
 }

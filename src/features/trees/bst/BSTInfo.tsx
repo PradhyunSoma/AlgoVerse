@@ -1,3 +1,6 @@
+import ComplexityPanel from '../../../components/ComplexityPanel'
+import { treeComplexity } from '../complexity'
+
 export default function BSTInfo() {
   return <section className="bubble-info lesson-panel tree-info" aria-labelledby="bst-info-title"><div>
     <p className="eyebrow">ORDERED BRANCHES · PRECISE POINTERS</p><h2 id="bst-info-title">Each comparison chooses a direction.</h2>
@@ -15,9 +18,6 @@ export default function BSTInfo() {
       Reset and Replay revisit snapshots and do not apply a saved mutation twice.</p>
     <p>Inorder visits left subtree, node, right subtree, so unique BST values appear in ascending order.
       The other three traversals retain their usual meanings. An ordinary BST does not automatically rebalance itself: sorted insertions can create a long chain.</p>
-  </div><div className="complexity-notes"><h3>Complexity depends on height h</h3><dl>
-    <div><dt>Search / insert / delete</dt><dd>O(h)</dd></div><div><dt>Minimum / maximum</dt><dd>O(h)</dd></div>
-    <div><dt>All traversals</dt><dd>O(n)</dd></div><div><dt>Reasonably balanced height</dt><dd>O(log n)</dd></div><div><dt>Skewed height</dt><dd>O(n)</dd></div>
-  </dl><p>There is no guaranteed O(log n) bound for an unbalanced BST. These bounds describe core pointer operations; validation, snapshots, path labels, and rendering add overhead.
-    Recursive traversals use O(h) stack space, level-order uses O(w) queue space, and storing traversal output uses O(n) additional space.</p></div></section>
+  </div><ComplexityPanel profile={treeComplexity.bst} />
+    </section>
 }

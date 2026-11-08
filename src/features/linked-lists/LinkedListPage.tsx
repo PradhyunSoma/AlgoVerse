@@ -163,7 +163,7 @@ export default function LinkedListPage() {
           </>}
           <div><dt>{step.newId ? 'newNode' : 'target'}</dt><dd>{step.held ?? 'NULL'}</dd></div>
         </dl>
-        <div className="step-explanation" role="status" aria-live="polite" aria-atomic="true"><span className="eyebrow">{step.kind.toUpperCase()}</span><p>{step.explanation}</p></div>
+        <div className="step-explanation" role="status" aria-live={playback.isPlaying ? 'off' : 'polite'} aria-atomic="true"><span className="eyebrow">{step.kind.toUpperCase()}</span><p>{step.explanation}</p></div>
         {kind.startsWith('traverse') && <p className="list-traversal" aria-label="Traversal sequence"><strong>Read so far</strong> {step.visited.length ? step.visited.join(' → ') : 'No values read yet'}</p>}
         </div>
         <StepControls index={playback.index} total={lesson.trace.length} canPrevious={playback.canPrevious} canNext={playback.canNext}

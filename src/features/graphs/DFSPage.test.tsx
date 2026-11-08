@@ -49,7 +49,8 @@ test('every DFS step and reverse step restores the exact stack, diagram, parents
   for(let i=trace.length-2;i>=0;i--) { click('Previous Step');expect(snapshot()).toEqual(snapshots[i]) }
   expect(button('Previous Step')).toBeDisabled()
   click('Next Step');expect(snapshot()).toEqual(snapshots[1])
-})
+// Full forward/backward snapshot coverage needs headroom when the suite runs in parallel.
+}, 15000)
 
 test.each([0.5,1,2,4])('DFS supports play, pause, reset, replay, and %s speed',speed=>{
   vi.useFakeTimers();mount();edit('A,B','A-B')

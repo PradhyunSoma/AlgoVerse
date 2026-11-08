@@ -1,3 +1,6 @@
+import ComplexityPanel from '../../components/ComplexityPanel'
+import { sortingComplexity } from './complexity'
+
 export default function InsertionSortInfo() {
   return (
     <section className="bubble-info lesson-panel" aria-labelledby="insertion-info-title">
@@ -9,16 +12,7 @@ export default function InsertionSortInfo() {
         <p>The sorted portion is ordered, but its values are not necessarily in their final positions yet. Later keys may shift them again. Equal values never shift past the key, so their original relative order is preserved: this is <strong>stability</strong>.</p>
         <p>Bubble Sort repeatedly swaps neighbors. Selection Sort finds a minimum across the remaining range. Insertion Sort instead places one key into the ordered portion. Nearly sorted arrays need few shifts, making Insertion Sort especially effective for them.</p>
       </div>
-      <div className="complexity-notes">
-        <h3>Complexity</h3>
-        <dl>
-          <div><dt>Best time · already sorted</dt><dd>O(n)</dd></div>
-          <div><dt>Average time</dt><dd>O(n²)</dd></div>
-          <div><dt>Worst time · reverse sorted</dt><dd>O(n²)</dd></div>
-          <div><dt>Auxiliary working space</dt><dd>O(1)</dd></div>
-        </dl>
-        <p>Already sorted input needs one value comparison per key and no shifts. Reverse order can shift every earlier value for each key. The core sort holds one key and a few indices. AlgoVerse also copies input and records snapshots and identities, using extra memory.</p>
-      </div>
+      <ComplexityPanel profile={sortingComplexity.insertion} />
     </section>
   )
 }

@@ -1,3 +1,6 @@
+import ComplexityPanel from '../../components/ComplexityPanel'
+import { listComplexity } from './complexity'
+
 export default function LinkedListInfo() {
   return <section className="bubble-info lesson-panel" aria-labelledby="list-info-title">
     <div>
@@ -12,16 +15,6 @@ export default function LinkedListInfo() {
       <p>The diagram uses stable node IDs as reference names, not real memory addresses. Detached nodes are held by local
         newNode or target references until connected or released. Equal data values can belong to different nodes.</p>
     </div>
-    <div className="complexity-notes">
-      <h3>Time complexity · no tail pointer</h3>
-      <dl>{[
-        ['Access by position', 'O(n)'], ['Search / full traversal', 'O(n)'], ['Insert at beginning', 'O(1)'],
-        ['Insert at end', 'O(n)'], ['Delete from beginning', 'O(1)'], ['Delete from end', 'O(n)'],
-        ['Other position operations', 'O(n)'],
-      ].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
-      <p>Finding a predecessor can require a full walk. Once it is known, changing its next reference takes O(1).
-        The list uses O(n) storage. These bounds describe standard list operations; copying, validation, and saved
-        playback snapshots add work and memory in this teaching tool.</p>
-    </div>
-  </section>
+    <ComplexityPanel profile={listComplexity.singly} />
+    </section>
 }

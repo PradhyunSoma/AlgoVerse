@@ -1,3 +1,4 @@
+import { recordOperation, zeroMetrics, type OperationMetrics } from './operationMetrics'
 import { mergeSort, type MergeSortEvent, type MergeSortEventKind } from './mergeSort'
 
 export interface MergeNode {
@@ -24,6 +25,7 @@ export interface MergeSortStep extends MergeSortEvent {
   readonly phase: MergePhase
   readonly lineId: MergeSortEventKind
   readonly explanation: string
+  readonly metrics: OperationMetrics
   readonly comparisons: number
   readonly bufferWrites: number
   readonly arrayWrites: number
@@ -73,10 +75,9 @@ export function createMergeSortTrace(input: readonly number[]): readonly MergeSo
   const identities = input.map((_, index) => index)
   const bufferIds: (number | null)[] = Array(input.length).fill(null)
   let sourceValues: readonly number[] | null = null
-  let comparisons = 0
-  let bufferWrites = 0
-  let arrayWrites = 0
+  let metrics = zeroMetrics
   mergeSort(input, (event, values, buffer) => {
+    metrics = recordOperation(metrics, 'merge', event.kind)
     const { kind, nodeId, lo, hi } = event
     if (kind === 'enter') {
       stack.push(nodeId)
@@ -95,13 +96,10 @@ export function createMergeSortTrace(input: readonly number[]): readonly MergeSo
       sourceValues = values.slice(lo, hi)
       bufferIds.fill(null, lo, hi)
     }
-    if (kind === 'compare') comparisons += 1
     if (event.sourceIndex !== null && event.destinationIndex !== null) {
-      bufferWrites += 1
       bufferIds[event.destinationIndex] = identities[event.sourceIndex]
     }
     if (kind === 'copy') {
-      arrayWrites += 1
       identities[event.destinationIndex!] = bufferIds[event.destinationIndex!]!
     }
     const phase = mergePhase(kind)
@@ -114,7 +112,7 @@ export function createMergeSortTrace(input: readonly number[]): readonly MergeSo
         result: entry.result ? [...entry.result] : null })),
       stack: [...stack], phase, lineId: kind === 'return' && hi - lo <= 1 ? 'base' : kind,
       explanation: explain(event, values, buffer),
-      comparisons, bufferWrites, arrayWrites })
+      metrics, comparisons: metrics.comparisons, bufferWrites: metrics.bufferWrites, arrayWrites: metrics.arrayWrites })
     // The return step shows the callee exiting. The next step is back in its caller.
     if (kind === 'return') stack.pop()
   })

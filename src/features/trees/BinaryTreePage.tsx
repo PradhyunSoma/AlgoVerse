@@ -65,7 +65,7 @@ export default function BinaryTreePage({ initialTree, initialInput, onTreeChange
       <div className="lesson-panel-heading"><h2 id="tree-visual-title">Inside the binary tree</h2><span className="lesson-tag">{traversalLabels[traversal]}</span></div>
       <TreeDiagram step={step} breadthFirst={breadthFirst} />
       <div className="tree-console"><div>
-        <div className="step-explanation" role="status" aria-live="polite" aria-atomic="true"><span className="eyebrow">{step.kind.toUpperCase()}</span><p>{step.explanation}</p></div>
+        <div className="step-explanation" role="status" aria-live={playback.isPlaying ? 'off' : 'polite'} aria-atomic="true"><span className="eyebrow">{step.kind.toUpperCase()}</span><p>{step.explanation}</p></div>
         <div className="tree-output"><h3>Traversal output</h3><p aria-label="Traversal output">{step.output.length ? step.output.map((id) => tree.nodes[id]!.value).join(' → ') : 'No values visited yet'}</p>
           <p className="tree-output-ids" aria-label="Output node IDs">{step.output.length ? step.output.join(' → ') : 'Node IDs appear here as values are visited.'}</p></div>
       </div><StepControls index={playback.index} total={trace.length} canPrevious={playback.canPrevious} canNext={playback.canNext}

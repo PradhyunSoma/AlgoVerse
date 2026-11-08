@@ -127,15 +127,23 @@ Recursive DFS shares graph editing, adjacency lists, stable SVG positions, paren
 
 Dijkstra implementation: all edges now carry integer weights from 0 to 99. The shared editor accepts `A-B: 4`, defaults omitted weights to 1, and rejects negative/malformed/non-finite values and parallel edges. Weight changes retain edge IDs. Switching BFS/DFS/Dijkstra preserves graph, source, destination, and draft text, and resets playback. Dijkstra’s Restore Sample Graph loads the five-vertex weighted sample with source A and destination E; other algorithms retain their existing sample.
 
-A dependency-free binary min-heap uses distance, label, stable ID, and insertion sequence as deterministic priority order. Lazy duplicate entries are shown in actual heap-array order and skipped when stale. Strict relaxation preserves the first equal-cost predecessor. Frozen traces separate distance updates, predecessor updates, heap updates, extract-min, stale checks, finalization, edge inspection/calculation, and completion. UI distinguishes tentative distances from finalized answers and labels pending predecessor updates. Weighted SVG adds non-overlapping opaque labels, relaxation/predecessor highlights, and selected finalized paths. Reconstruction checks predecessor direction, cycles, finalized status, and summed route cost. The sample yields A=0, B=3, C=1, D=4, E=7 and A→C→B→D→E at cost 7. Tests cover heap invariants, exhaustive small-graph route costs, snapshot restoration, all speeds, switching/editing, and prior modules. Phase 5 implementation is complete; comprehensive audits remain deferred. Phase 6 has not started.
+A dependency-free binary min-heap uses distance, label, stable ID, and insertion sequence as deterministic priority order. Lazy duplicate entries are shown in actual heap-array order and skipped when stale. Strict relaxation preserves the first equal-cost predecessor. Frozen traces separate distance updates, predecessor updates, heap updates, extract-min, stale checks, finalization, edge inspection/calculation, and completion. UI distinguishes tentative distances from finalized answers and labels pending predecessor updates. Weighted SVG adds non-overlapping opaque labels, relaxation/predecessor highlights, and selected finalized paths. Reconstruction checks predecessor direction, cycles, finalized status, and summed route cost. The sample yields A=0, B=3, C=1, D=4, E=7 and A→C→B→D→E at cost 7. Tests cover heap invariants, exhaustive small-graph route costs, snapshot restoration, all speeds, switching/editing, and prior modules. Phase 5 implementation is complete; comprehensive audits remain deferred. Phase 6 progress is recorded below.
 
 ### Phase 6 · Comparisons and learning polish
+
+Task 2 implementation: `/sorting` has keyboard-accessible Visualize/Compare tabs. Both retain the last valid original array; changing views unmounts the old playback and starts a fresh lesson (algorithm selections reset to view defaults). Compare selects two or three distinct algorithms, supplies isolated identical inputs, and reuses the existing bar, held-key, merge storage/recursion, and pivot/recursion renderers. Shared custom/random input adds validated example, sorted, reverse, nearly-sorted, and duplicate presets.
+
+The shared playback engine now maintains one or multiple bounded cursors with one timer; its single-trace API remains compatible. Next/ticks advance each unfinished trace once; Previous decrements each cursor independently, including completed traces, and clamps at zero. Thus Previous is a per-trace rewind, not an undo of a shared tick that previously held a completed trace. Next after that rewind restores each panel. All-finished stops autoplay; Reset/Replay start all cursors at zero.
+
+Typed metric snapshots count actual key comparisons, distinct-position swaps (two main-array writes), insertion shifts plus every key placement, merge buffer value writes, and copy-back writes. Setup copies, null initialization/clearing, local variables, indices, identities, and teaching events are excluded. Existing scalar counters derive from the same snapshots. The final summary combines actual totals with Phase 6 Task 1 complexity metadata and input-specific facts, with no benchmark or ranking claims. Routine tests cover independently hand-computed small-array totals, intermediate metrics, two/three-panel playback, input/view/selection changes, and existing modules. Task 3 is implemented as documented below.
+
+Implementation status: Task 1 is implemented. Typed feature-owned complexity metadata supplies a shared panel in all 14 completed algorithm/data-structure views. Summaries include case distinctions, operation bounds, variable definitions, and reasons; native expandable details explain implementation assumptions and storage. Core costs are explicitly separated from private copies, validation, path bookkeeping, output, graph preprocessing, reconstruction, and trace/rendering overhead. Playback steps are not presented as operation counts or benchmarks. Existing algorithm and playback logic is unchanged. Tests check content through every page selector and verify key assumptions against real sorting, list, and heap behavior. Task 2 is implemented as documented below; comprehensive phase audits remain deferred.
 
 **Tasks**
 
 1. Add time and space complexity explanations with assumptions and case distinctions where relevant.
 2. Compare sorting algorithms on the same input using defined metrics such as key comparisons and writes. Explain how each metric is counted.
-3. Review the core workflows for mobile layout, keyboard access, reduced motion, and performance at the supported input limits.
+3. Polish mobile layout, keyboard access, reduced motion, playback clarity, and targeted rendering performance. Add the language-neutral Code Visualizer Coming Soon route and navigation without implementing execution.
 
 **Acceptance criteria**
 
@@ -143,7 +151,27 @@ A dependency-free binary min-heap uses distance, label, stable ID, and insertion
 - Sorting comparisons use identical starting data and consistently defined metrics. Small known examples verify the counts.
 - Core learning workflows can be completed on mobile and with a keyboard. Reduced-motion mode preserves every step and its meaning.
 
-### Phase 7 · Optional learning extensions
+Task 3 implementation: `/code-visualizer` is a lightweight Coming Soon page with a clearly labeled noninteractive, plain-language preview. Desktop/mobile navigation and a compact dashboard card link to it. No programming language has been selected. Shared controls state Playing, Paused, Ready, or Complete, describe progress accessibly, and clarify Reset/Replay. Explanations stay readable during autoplay but stop announcing every tick; paused/manual steps retain polite announcements. Mobile controls have 44px minimum heights; wide diagrams keep local scrolling. Reduced-motion styles disable nonessential animations and transitions without altering playback. Completed comparison panels are memoized, and unchanged tree layouts reuse their position lookup. Algorithm semantics and the shared timer remain unchanged.
+
+### Phase 7 · Custom Code Visualizer (planning pending)
+
+**Status:** Not implemented. The Phase 6 placeholder is illustrative only. The programming language, supported constructs, execution environment, limits, and tracing design require a separately approved plan before implementation.
+
+**Planning tasks**
+
+1. Choose a language and define a bounded, safe execution approach and supported program constructs.
+2. Break editor/input, execution tracing, variable state, call stack, data-structure views, and playback into small approved tasks with acceptance criteria.
+3. Implement only those approved tasks, with routine tests and immediate fixes.
+
+**Acceptance direction**
+
+- Program execution, state, stack, and highlighted instruction agree at every inspectable step.
+- Input errors and execution limits are clearly explained; deterministic replay and accessible controls remain available.
+- Final acceptance criteria are established with the Phase 7 plan, not inferred from the placeholder.
+
+Comprehensive audits of Phases 1–7 begin only after Phase 7 development is implemented. Routine task checks continue throughout.
+
+### Optional later learning extensions
 
 **Tasks**
 

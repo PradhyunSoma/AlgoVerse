@@ -79,7 +79,7 @@ export default function BSTPage({ initialTree, onSave, typeSelector }: { initial
         <dl className="execution-state" aria-label="BST local references"><div><dt>ROOT</dt><dd>{step.tree.root ?? 'NULL'}</dd></div><div><dt>current</dt><dd>{step.current ?? 'NULL'}</dd></div>
           {Object.entries(bstStep.locals).map(([name, id]) => <div key={name}><dt>{name}</dt><dd>{id ?? 'NULL'}</dd></div>)}</dl>
       </> : <TreeDiagram step={step as TreeStep} breadthFirst={kind === 'level-order'} />}
-      <div className="tree-console"><div><div className="step-explanation" role="status" aria-live="polite" aria-atomic="true"><span className="eyebrow">{step.kind.toUpperCase()}</span><p>{step.explanation}</p></div>
+      <div className="tree-console"><div><div className="step-explanation" role="status" aria-live={playback.isPlaying ? 'off' : 'polite'} aria-atomic="true"><span className="eyebrow">{step.kind.toUpperCase()}</span><p>{step.explanation}</p></div>
         {bstStep ? <div className="tree-output"><h3>Operation result</h3><p aria-label="Operation result">{bstStep.outcome === 'pending' || bstStep.outcome === 'ready' ? 'Follow the steps to see the result.' : `${bstStep.outcome}${bstStep.result === null ? '' : ` · ${step.tree.nodes[bstStep.result]!.value} (${bstStep.result})`}`}</p></div>
           : <div className="tree-output"><h3>Traversal output</h3><p aria-label="Traversal output">{(step as TreeStep).output.map((id) => step.tree.nodes[id]!.value).join(' → ') || 'No values visited yet'}</p></div>}
       </div><StepControls index={playback.index} total={lesson.trace.length} canPrevious={playback.canPrevious} canNext={playback.canNext}

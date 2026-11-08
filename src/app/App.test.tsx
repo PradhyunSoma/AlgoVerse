@@ -9,6 +9,7 @@ const routeCases = [
   { path: '/linked-lists', title: 'Singly Linked List', navigation: 'Linked Lists' },
   { path: '/trees', title: 'Binary Tree', navigation: 'Trees' },
   { path: '/graphs', title: 'Breadth-First Search', navigation: 'Graphs' },
+  { path: '/code-visualizer', title: 'Custom Code Visualizer', navigation: 'Code Visualizer' },
 ]
 
 beforeEach(() => {
@@ -70,7 +71,7 @@ test('navigates through every sidebar link and updates active styles and focus',
   }
 })
 
-test.each(routeCases.slice(1))('opens $path from its category card and returns home', async ({ path, title }) => {
+test.each(routeCases.slice(1, 5))('opens $path from its category card and returns home', async ({ path, title }) => {
   renderPage()
   const cardTitle = path === '/sorting' ? 'Sorting Algorithms' : path === '/linked-lists' ? 'Linked Lists' : path === '/trees' ? 'Trees' : 'Graphs'
   const card = within(screen.getByRole('article', { name: cardTitle }))
@@ -139,4 +140,38 @@ test('restores a dashboard section when opening a hash URL', () => {
   expect(screen.getByRole('heading', { name: routeCases[0].title })).toBeVisible()
   expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith({ behavior: 'instant' })
   expect(window.location.hash).toBe('#categories')
+})
+
+
+test('Code Visualizer is an honest static preview, reachable from mobile navigation and dashboard', async () => {
+  renderPage()
+  const card = within(screen.getByRole('region', { name: 'Code Visualizer' }))
+  expect(card.getByText('Coming Soon')).toBeVisible()
+  fireEvent.click(card.getByRole('link', { name: 'Code Visualizer' }))
+  expect(await screen.findByRole('heading', { name: 'Custom Code Visualizer' })).toBeVisible()
+  const main = within(screen.getByRole('main'))
+  expect(main.getByText('Coming Soon')).toBeVisible()
+  expect(main.getByText('Visualize how your own code executes, step by step.')).toBeVisible()
+  expect(main.getByText('Illustrative preview · Not interactive')).toBeVisible()
+  expect(main.getByText(/programming language.*still being planned/)).toBeVisible()
+  expect(main.getByRole('figure')).toHaveTextContent('No code is running.')
+  expect(main.queryByRole('textbox')).not.toBeInTheDocument()
+  expect(main.queryByRole('button')).not.toBeInTheDocument()
+  fireEvent.click(main.getByRole('link', { name: 'Back to Dashboard' }))
+  expect(await screen.findByRole('heading', { name: routeCases[0].title })).toBeVisible()
+  const toggle = screen.getByRole('button', { name: 'Open navigation' })
+  fireEvent.click(toggle)
+  const nav = within(screen.getByRole('navigation', { name: 'Main navigation' }))
+  const link = nav.getByRole('link', { name: 'Code Visualizer' })
+  expect(link).toHaveAccessibleDescription('Coming Soon')
+  link.focus()
+  expect(link).toHaveFocus()
+  fireEvent.click(link)
+  expect(toggle).toHaveAttribute('aria-expanded', 'false')
+  expect(link).toHaveAttribute('aria-current', 'page')
+  expect(screen.getByRole('main')).toHaveFocus()
+  await act(async () => window.history.back())
+  expect(await screen.findByRole('heading', { name: routeCases[0].title })).toBeVisible()
+  await act(async () => window.history.forward())
+  expect(await screen.findByRole('heading', { name: 'Custom Code Visualizer' })).toBeVisible()
 })

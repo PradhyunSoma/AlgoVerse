@@ -1,3 +1,4 @@
+import { recordOperation, zeroMetrics, type OperationMetrics } from './operationMetrics'
 import { quickSort, type QuickSortEvent, type QuickSortEventKind } from './quickSort'
 
 export interface QuickCall {
@@ -21,6 +22,7 @@ export interface QuickSortStep extends QuickSortEvent {
   readonly phase: 'Ready' | 'Recursion' | 'Base case' | 'Partition' | 'Pivot placement' | 'Return' | 'Complete'
   readonly lineId: QuickSortEventKind
   readonly explanation: string
+  readonly metrics: OperationMetrics
   readonly comparisons: number
   readonly swaps: number
 }
@@ -74,9 +76,9 @@ export function createQuickSortTrace(input: readonly number[]): readonly QuickSo
   const finalIndices = new Set<number>()
   const identities = input.map((_, index) => index)
   let lastReturned: string | null = null
-  let comparisons = 0
-  let swaps = 0
+  let metrics = zeroMetrics
   quickSort(input, (event, values) => {
+    metrics = recordOperation(metrics, 'quick', event.kind)
     const { kind, callId, low, high } = event
     if (kind === 'enter') {
       stack.push(callId)
@@ -91,9 +93,7 @@ export function createQuickSortTrace(input: readonly number[]): readonly QuickSo
     if (call && status) calls.set(callId, { ...call, status,
       finalPivot: kind === 'pivot-fixed' ? event.pivotTarget : call.finalPivot,
       result: kind === 'base' || kind === 'return' ? values.slice(low, high + 1) : call.result })
-    if (kind === 'compare') comparisons += 1
     if (event.swapIndices !== null) {
-      swaps += 1
       const [left, right] = event.swapIndices
       ;[identities[left], identities[right]] = [identities[right], identities[left]]
     }
@@ -105,7 +105,7 @@ export function createQuickSortTrace(input: readonly number[]): readonly QuickSo
       calls: [...calls.values()].map((entry) => ({ ...entry, input: [...entry.input], result: entry.result === null ? null : [...entry.result] })),
       stack: [...stack], lastReturned, phase: phase(kind),
       lineId: kind === 'return' && low >= high ? 'base' : kind,
-      explanation: explain(event, values), comparisons, swaps })
+      explanation: explain(event, values), metrics, comparisons: metrics.comparisons, swaps: metrics.swaps })
     if (kind === 'return') stack.pop()
   })
   return steps

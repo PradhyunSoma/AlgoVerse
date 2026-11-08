@@ -1,9 +1,11 @@
+import { recordOperation, zeroMetrics, type OperationMetrics } from './operationMetrics'
 import { bubbleSort, type BubbleSortEvent, type BubbleSortEventKind } from './bubbleSort'
 
 export interface SortingStep extends BubbleSortEvent {
   readonly values: readonly number[]
   readonly lineId: BubbleSortEventKind
   readonly explanation: string
+  readonly metrics: OperationMetrics
   readonly comparisons: number
   readonly swaps: number
 }
@@ -38,18 +40,15 @@ export function createBubbleSortTrace(input: readonly number[]): readonly Sortin
     throw new RangeError('Bubble Sort requires finite numbers.')
   }
   const steps: SortingStep[] = []
-  let comparisons = 0
-  let swaps = 0
+  let metrics = zeroMetrics
   bubbleSort(input, (event, values) => {
-    if (event.kind === 'compare') comparisons += 1
-    if (event.kind === 'swap') swaps += 1
+    metrics = recordOperation(metrics, 'bubble', event.kind)
     steps.push({
       ...event,
       values: [...values],
       lineId: event.kind,
       explanation: explain(event, values),
-      comparisons,
-      swaps,
+      metrics, comparisons: metrics.comparisons, swaps: metrics.swaps,
     })
   })
   return steps
